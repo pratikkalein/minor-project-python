@@ -1,8 +1,9 @@
 import threading
-
+import os
+import subprocess as sp
 def errorCount():
     threading.Timer(5.0,errorCount).start()
-    fname = ("log.txt")
+    fname = ("/var/log/nginx/access.log")
     num1="200"
     num2="499"
     num3="500"
@@ -10,7 +11,7 @@ def errorCount():
     count2= 0;
     count3= 0;
     sum=0;
-    out1='abc.txt'
+    out1='ser1.conf'
     with open(fname, 'r') as f:
         for line in f:
             words1= line.split()
@@ -34,13 +35,17 @@ def errorCount():
     print("Occurrences of the number",num3,"is",count3)
     sum=count2+count3
     print("Total Erros:",sum)
-        
-     if(sum>=200):
-        out = os.popen('ls | grep abc.txt').read()
-        print(out)
+    if(sum>=200):
+        out = sp.getoutput('ls /etc/nginx/conf.d | grep ser1.conf')
+        #print(out)
         b=(out1==out)
-        print(b)
+        #print(b)
         if(b==True):
-            os.system('mv abc.txt xyz.py')
-            print("File successfully renamed")
+            os.system('mv /etc/nginx/conf.d/ser1.conf /etc/nginx/conf.d/ser1.txt')
+            os.system('mv /etc/nginx/conf.d/ser12.txt /etc/nginx/conf.d/ser12.conf')
+            #os.system('mv /etc/nginx/conf.d/ser1.conf /etc/nginx/conf.d/ser1.txt')
+            print("\n")
+            os.system('service nginx reload')
+            print("\n-----Server 2 Online-----\n")
+        
 errorCount()
